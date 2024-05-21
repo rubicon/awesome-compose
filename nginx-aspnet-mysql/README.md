@@ -1,5 +1,5 @@
 ## Compose sample application
-### ASP.NET server with an Nginx proxy and a MySQL database
+### ASP.NET server with a Nginx proxy and a MySQL database
 
 Project structure:
 ```
@@ -10,24 +10,25 @@ Project structure:
 │   └── Program.cs
 ├── db
 │   └── password.txt
-├── docker-compose.yaml
+├── compose.yaml
 ├── proxy
 │   ├── conf
 │   └── Dockerfile
 └── README.md
 ```
 
-[_docker-compose.yaml_](docker-compose.yaml)
+[_compose.yaml_](compose.yaml)
 ```
 services:
   backend:
-    build: backend
+    build:
+      context: backend
     ...
   db:
     # We use a mariadb image which supports both amd64 & arm64 architecture
-    image: mariadb:10.6.4-focal
+    image: mariadb:10-focal
     # If you really want to use MySQL, uncomment the following line
-    #image: mysql:8.0.27
+    #image: mysql:8
     ...
   proxy:
     build: proxy
@@ -36,7 +37,7 @@ services:
     ...
 ```
 The compose file defines an application with three services `proxy`, `backend` and `db`.
-When deploying the application, docker-compose maps port 80 of the proxy service container to port 80 of the host as specified in the file.
+When deploying the application, docker compose maps port 80 of the proxy service container to port 80 of the host as specified in the file.
 Make sure port 80 on the host is not already being in use.
 
 > ℹ️ **_INFO_**  
@@ -44,10 +45,10 @@ Make sure port 80 on the host is not already being in use.
 > You still can use the MySQL image by uncommenting the following line in the Compose file   
 > `#image: mysql:8.0.27`
 
-## Deploy with docker-compose
+## Deploy with docker compose
 
 ```
-$ docker-compose up -d
+$ docker compose up -d
 ```
 
 ## Expected result
@@ -72,5 +73,5 @@ $ curl localhost:80
 
 Stop and remove the containers
 ```
-$ docker-compose down
+$ docker compose down
 ```
